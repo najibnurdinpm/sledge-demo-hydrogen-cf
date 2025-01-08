@@ -1,0 +1,19 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "hydrogen-sledge-demo-cf"
+compatibility_date = "2024-12-30"
+pages_build_output_dir = "./build/client"
+
+[vars]
+# These variables are only available locally in MiniOxygen
+
+SESSION_SECRET=""
+PUBLIC_STOREFRONT_API_TOKEN=""
+PUBLIC_STORE_DOMAIN=""
+
+# Using Contact Us form App
+PRIVATE_ADMIN_API_TOKEN=""
+PRIVATE_ADMIN_API_VERSION=""
+
+# Sledge Api key
+SLEDGE_API_KEY=""
+SLEDGE_INSTANT_SEARCH_API_KEY=""

@@ -6,7 +6,7 @@ export function useCartFetchers(actionName: string) {
   const cartFetchers = [];
 
   for (const fetcher of fetchers) {
-    const formData = fetcher.submission?.formData;
+    const formData = fetcher?.formData;
     if (formData) {
       const formInputs = CartForm.getFormInput(formData);
       if (formInputs.action === actionName) {

@@ -86,7 +86,6 @@ export const useRootLoaderData = () => {
   return root?.data as SerializeFrom<typeof loader>;
 };
 
-
 export async function loader({request, context}: LoaderArgs) {
   const {session, storefront, cart} = context;
   const cartId = getCartId(request);
@@ -148,6 +147,7 @@ export default function App() {
     productClass = 'template-product';
 
   useAnalytics(hasUserConsent);
+
   return (
     <html lang="en">
       <head>

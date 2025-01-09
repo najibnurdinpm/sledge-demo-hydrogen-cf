@@ -28,7 +28,7 @@ export function CartDrawer({isOpen, setCartDrawerState}: ICartDrawerProps) {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
 
   useEffect(() => {
-    if (addToCartFetchers.length && addToCartFetchers[0].data?.errors.length) {
+    if (addToCartFetchers.length && addToCartFetchers[0].data?.errors) {
       setErrorCart(addToCartFetchers[0].data?.errors[0]?.message);
     } else {
       if (addToCartFetchers.length) {
@@ -36,7 +36,7 @@ export function CartDrawer({isOpen, setCartDrawerState}: ICartDrawerProps) {
       }
     }
 
-    if (updateCartFetcher.length && updateCartFetcher[0].data?.errors.length) {
+    if (updateCartFetcher.length && updateCartFetcher[0].data?.errors) {
       setErrorCart(updateCartFetcher[0].data?.errors[0]?.message);
     } else {
       if (updateCartFetcher.length) {

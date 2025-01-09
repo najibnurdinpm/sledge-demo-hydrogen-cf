@@ -3,6 +3,7 @@ import {RemixServer} from '@remix-run/react';
 import isbot from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
+import {adjustContentSecurityPolice} from '~/lib/contentSecurityPolice';
 
 export default async function handleRequest(
   request: Request,
@@ -38,10 +39,10 @@ export default async function handleRequest(
     await body.allReady;
   }
 
-  const addBaseUri = `${header} https://*; img-src 'self' https://*`
+  const newHeader = await adjustContentSecurityPolice(header)
   
   responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', addBaseUri);
+  responseHeaders.set('Content-Security-Policy', newHeader);
 
   return new Response(body, {
     headers: responseHeaders,

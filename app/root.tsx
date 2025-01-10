@@ -19,7 +19,7 @@ import {
   useMatches,
 } from '@remix-run/react';
 
-import favicon from '../public/favicon.png?url';
+import favicon from './favicon.png?url';
 import {Layout} from './components/Layout';
 import {seoPayload} from '~/lib/seo.server';
 

@@ -31,7 +31,7 @@ export async function loader({request, context}: LoaderArgs) {
     },
     {
       headers: {
-        'Cache-Control': CACHE_SHORT,
+        'Cache-Control': 'no-store',
       },
     },
   );

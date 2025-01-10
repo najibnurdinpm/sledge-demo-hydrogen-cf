@@ -10,7 +10,7 @@ export async function loader() {
     },
     {
       headers: {
-        'cache-control': CACHE_LONG,
+        'cache-control': 'no-store',
       },
     },
   );

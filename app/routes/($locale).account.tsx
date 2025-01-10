@@ -74,7 +74,7 @@ export async function loader({request, context, params}: LoaderArgs) {
     },
     {
       headers: {
-        'Cache-Control': CACHE_NONE,
+        'Cache-Control': 'no-store',
       },
     },
   );

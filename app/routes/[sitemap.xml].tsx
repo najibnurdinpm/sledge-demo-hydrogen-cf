@@ -33,7 +33,7 @@ export async function loader({request, context: {storefront}}: LoaderArgs) {
       headers: {
         'content-type': 'application/xml',
         // Cache for 24 hours
-        'cache-control': `max-age=${60 * 60 * 24}`,
+        'cache-control': `no-store`,
       },
     },
   );

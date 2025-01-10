@@ -22,7 +22,7 @@ export const loader = async ({request, context: {storefront}}: LoaderArgs) => {
     {seo, blogs},
     {
       headers: {
-        'Cache-Control': CACHE_SHORT,
+        'Cache-Control': 'no-store',
       },
     },
   );

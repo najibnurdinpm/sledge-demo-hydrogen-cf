@@ -8,7 +8,7 @@ export const loader = ({request}: LoaderArgs) => {
     headers: {
       'content-type': 'text/plain',
       // Cache for 24 hours
-      'cache-control': `max-age=${60 * 60 * 24}`,
+      'cache-control': `no-store`,
     },
   });
 };

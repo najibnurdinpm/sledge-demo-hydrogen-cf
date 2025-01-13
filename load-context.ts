@@ -22,7 +22,6 @@ declare module "@remix-run/cloudflare" {
 
 type GetLoadContext = (args: {
   request: Request;
-  env: Env,
   context: { cloudflare: Cloudflare }; // load context _before_ augmentation
 }) => AppLoadContext;
 
@@ -30,45 +29,30 @@ type GetLoadContext = (args: {
 export const getLoadContext: GetLoadContext = async ({
   context,
   request
+}: {
+  request: Request;
+	context: {
+		cloudflare: Omit<
+			PlatformProxy<Env, IncomingRequestCfProperties>,
+			'dispose' | 'caches'
+		> & {
+			caches:
+				| PlatformProxy<Env, IncomingRequestCfProperties>['caches']
+				| CacheStorage;
+		};
+	};
 }) => {
 
   const [session] = await Promise.all([
-    HydrogenSession.init(request, [process.env.SESSION_SECRET as string]),
+    HydrogenSession.init(request, [context.cloudflare.env.SESSION_SECRET as string]),
   ]);
-
-  const env: Env = {
-    SESSION_SECRET: '',
-    PUBLIC_STOREFRONT_API_TOKEN: '',
-    PRIVATE_STOREFRONT_API_TOKEN: '',
-    PUBLIC_STORE_DOMAIN: '',
-    PRIVATE_ADMIN_API_TOKEN: '',
-    PRIVATE_ADMIN_API_VERSION: '',
-    PUBLIC_STOREFRONT_ID: '',
-    SLEDGE_API_KEY: '',
-    SLEDGE_INSTANT_SEARCH_API_KEY: '',
-    GA_TRACKING_ID: '',
-  };
-  
-  env.SESSION_SECRET = process.env.SESSION_SECRET as string;
-  env.PUBLIC_STOREFRONT_API_TOKEN = process.env
-    .PUBLIC_STOREFRONT_API_TOKEN as string;
-  env.PRIVATE_STOREFRONT_API_TOKEN = process.env
-    .PRIVATE_STOREFRONT_API_TOKEN as string;
-  env.PUBLIC_STORE_DOMAIN = process.env.PUBLIC_STORE_DOMAIN as string;
-  env.PRIVATE_ADMIN_API_TOKEN = process.env.PRIVATE_ADMIN_API_TOKEN as string;
-  env.PRIVATE_ADMIN_API_VERSION = process.env
-    .PRIVATE_ADMIN_API_VERSION as string;
-  env.SLEDGE_API_KEY = process.env.SLEDGE_API_KEY;
-  env.SLEDGE_INSTANT_SEARCH_API_KEY =
-    process.env.SLEDGE_INSTANT_SEARCH_API_KEY;
-  env.GA_TRACKING_ID = process.env.GA_TRACKING_ID;
 
   const storefront = createStorefrontClient({
     buyerIp: request.headers.get('x-forwarded-for') ?? undefined,
     i18n: getLocaleFromRequest(request),
-    privateStorefrontToken: process.env.PRIVATE_ADMIN_API_TOKEN,
-    publicStorefrontToken: process.env.PUBLIC_STOREFRONT_API_TOKEN,
-    storeDomain: `https://${process.env.PUBLIC_STORE_DOMAIN}`,
+    privateStorefrontToken: context.cloudflare.env.PRIVATE_ADMIN_API_TOKEN,
+    publicStorefrontToken: context.cloudflare.env.PUBLIC_STOREFRONT_API_TOKEN,
+    storeDomain: `https://${context.cloudflare.env.PUBLIC_STORE_DOMAIN}`,
   }).storefront
 
   const cart = createCartHandler({
@@ -79,7 +63,7 @@ export const getLoadContext: GetLoadContext = async ({
 
   return {
     ...context,
-    env,
+    env:context.cloudflare.env,
     session,
     storefront,
     cart,

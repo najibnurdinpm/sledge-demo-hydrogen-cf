@@ -5,10 +5,10 @@
   "version": "2024.10.3",
   "type": "module",
   "scripts": {
-    "build": "shopify hydrogen build",
+    "build": "remix vite:build",
     "dev": "shopify hydrogen dev",
     "start": "wrangler pages dev ./build/client",
-    "preview": "npm run build && wrangler pages dev",
+    "preview": "npm run build && wrangler pages dev ./build/client",
     "deploy": "npm run build && wrangler pages deploy",
     "tail": "wrangler pages deployment tai",
     "lint": "eslint --no-error-on-unmatched-pattern --ext .js,.ts,.jsx,.tsx .",
